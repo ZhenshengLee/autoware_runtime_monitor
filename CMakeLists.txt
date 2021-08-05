@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(rqt_runtime_monitor)
+project(autoware_runtime_monitor)
 # Load catkin and all dependencies required for this package
 find_package(catkin REQUIRED)
 catkin_package()
@@ -13,6 +13,6 @@ install(DIRECTORY resource
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-catkin_install_python(PROGRAMS scripts/rqt_runtime_monitor
+catkin_install_python(PROGRAMS scripts/autoware_runtime_monitor
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

@@ -1,7 +1,7 @@
 <library path="src">
-  <class name="RuntimeMonitor" type="rqt_runtime_monitor.runtime_monitor.RuntimeMonitor" base_class_type="rqt_gui_py::Plugin">
+  <class name="AutowareRuntimeMonitor" type="autoware_runtime_monitor.autoware_runtime_monitor.AutowareRuntimeMonitor" base_class_type="rqt_gui_py::Plugin">
     <description>
-      A Python GUI plugin for displaying diagnostics topics.
+      A Python GUI plugin for displaying autoware diagnostics topics.
     </description>
     <qtgui>
       <group>

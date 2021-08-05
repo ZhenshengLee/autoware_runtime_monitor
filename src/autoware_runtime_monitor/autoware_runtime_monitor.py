@@ -34,16 +34,16 @@
 
 from qt_gui.plugin import Plugin
 
-from .runtime_monitor_widget import RuntimeMonitorWidget
+from .autoware_runtime_monitor_widget import AutowareRuntimeMonitorWidget
 
 
-class RuntimeMonitor(Plugin):
+class AutowareRuntimeMonitor(Plugin):
 
     def __init__(self, context):
-        super(RuntimeMonitor, self).__init__(context)
+        super(AutowareRuntimeMonitor, self).__init__(context)
         self.setObjectName('runtime_monitor')
 
-        self._widget = RuntimeMonitorWidget()
+        self._widget = AutowareRuntimeMonitorWidget()
         if context.serial_number() > 1:
             self._widget.setWindowTitle(self._widget.windowTitle() + (' (%d)' % context.serial_number()))
         context.add_widget(self._widget)

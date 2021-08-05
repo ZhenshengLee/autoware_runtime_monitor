@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RuntimeMonitorWidget</class>
- <widget class="QWidget" name="RuntimeMonitorWidget">
+ <class>AutowareRuntimeMonitorWidget</class>
+ <widget class="QWidget" name="AutowareRuntimeMonitorWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Runtime Monitor</string>
+   <string>Autoware Runtime Monitor</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
