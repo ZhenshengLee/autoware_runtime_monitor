@@ -70,6 +70,7 @@ class AutowareRuntimeMonitorWidget(QWidget):
 
         self._mutex = threading.Lock()
 
+        self._fatal_icon = QIcon.fromTheme('dialog-error')
         self._error_icon = QIcon.fromTheme('dialog-error')
         self._warning_icon = QIcon.fromTheme('dialog-warning')
         self._ok_icon = QIcon.fromTheme('dialog-information')
@@ -77,6 +78,10 @@ class AutowareRuntimeMonitorWidget(QWidget):
         self._stale_node = QTreeWidgetItem(self.tree_widget.invisibleRootItem(), ['Stale (0)'])
         self._stale_node.setIcon(0, self._error_icon)
         self.tree_widget.addTopLevelItem(self._stale_node)
+
+        self._fatal_node = QTreeWidgetItem(self.tree_widget.invisibleRootItem(), ['Fatal (0)'])
+        self._fatal_node.setIcon(0, self._error_icon)
+        self.tree_widget.addTopLevelItem(self._fatal_node)
 
         self._error_node = QTreeWidgetItem(self.tree_widget.invisibleRootItem(), ['Errors (0)'])
         self._error_node.setIcon(0, self._error_icon)
@@ -89,6 +94,7 @@ class AutowareRuntimeMonitorWidget(QWidget):
         self._ok_node = QTreeWidgetItem(self.tree_widget.invisibleRootItem(), ['Ok (0)'])
         self._ok_node.setIcon(0, self._ok_icon)
         self.tree_widget.addTopLevelItem(self._ok_node)
+
         self.tree_widget.itemSelectionChanged.connect(self._refresh_selection)
         self.keyPressEvent = self._on_key_press
 
@@ -150,6 +156,8 @@ class AutowareRuntimeMonitorWidget(QWidget):
     def _clear_tree(self):
         for index in range(self._stale_node.childCount()):
             self._stale_node.removeChild(self._stale_node.child(index))
+        for index in range(self._fatal_node.childCount()):
+            self._fatal_node.removeChild(self._fatal_node.child(index))
         for index in range(self._error_node.childCount()):
             self._error_node.removeChild(self._error_node.child(index))
         for index in range(self._warning_node.childCount()):
@@ -204,6 +212,8 @@ class AutowareRuntimeMonitorWidget(QWidget):
                 self._warning_node.removeChild(item.tree_node)
             elif (item.status.level == -1) or (item.status.level == -1):
                 self._stale_node.removeChild(item.tree_node)
+            elif (item.status.level == DiagnosticStatus.FATAL):
+                self._fatal_node.removeChild(item.tree_node)
             else: # ERROR
                 self._error_node.removeChild(item.tree_node)
 
@@ -213,6 +223,8 @@ class AutowareRuntimeMonitorWidget(QWidget):
                 parent_node = self._warning_node
             elif (status.level == -1) or (status.level == -1):
                 parent_node = self._stale_node
+            elif (status.level == DiagnosticStatus.FATAL):
+                parent_node = self._fatal_node
             else: # ERROR
                 parent_node = self._error_node
 
@@ -244,6 +256,8 @@ class AutowareRuntimeMonitorWidget(QWidget):
             parent_node = self._ok_node
         elif (status.level == DiagnosticStatus.WARN):
             parent_node = self._warning_node
+        elif (status.level == DiagnosticStatus.FATAL):
+            parent_node = self._fatal_node
         elif (status.level == -1) or (status.level == -1):
             parent_node = self._stale_node
         else: # ERROR
@@ -310,6 +324,8 @@ class AutowareRuntimeMonitorWidget(QWidget):
                     self._ok_node.removeChild(item.tree_node)
                 elif (item.status.level == 1):
                     self._warning_node.removeChild(item.tree_node)
+                elif (item.status.level == DiagnosticStatus.FATAL):
+                    self._fatal_node.removeChild(item.tree_node)
                 elif (item.status.level == -1) or (item.status.level == -1):
                     self._stale_node.removeChild(item.tree_node)
                 else:
@@ -346,6 +362,7 @@ class AutowareRuntimeMonitorWidget(QWidget):
 
     def _update_root_labels(self):
         self._stale_node.setText(0, "Stale (%s)" % (self._stale_node.childCount()))
+        self._fatal_node.setText(0, "Fatals (%s)" % (self._fatal_node.childCount()))
         self._error_node.setText(0, "Errors (%s)" % (self._error_node.childCount()))
         self._warning_node.setText(0, "Warnings (%s)" % (self._warning_node.childCount()))
         self._ok_node.setText(0, "Ok (%s)" % (self._ok_node.childCount()))
